@@ -1,0 +1,241 @@
+<html>
+<head>
+<title>PlayActivity.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #000080; font-weight: bold;}
+.s1 { color: #000000;}
+.s2 { color: #0000ff;}
+.s3 { color: #008000; font-weight: bold;}
+</style>
+</head>
+<body bgcolor="#ffffff">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#c0c0c0" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+PlayActivity.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span>felixrpunkt.example.mathjogging;
+
+<span class="s0">import </span>android.graphics.Color;
+<span class="s0">import </span>android.os.Bundle;
+
+<span class="s0">import </span>androidx.appcompat.app.AppCompatActivity;
+
+<span class="s0">import </span>android.os.CountDownTimer;
+<span class="s0">import </span>android.util.Log;
+<span class="s0">import </span>android.view.View;
+<span class="s0">import </span>android.widget.Button;
+<span class="s0">import </span>android.widget.ImageView;
+<span class="s0">import </span>android.widget.TextView;
+<span class="s0">import </span>android.widget.Toast;
+
+<span class="s0">import </span>java.util.Arrays;
+<span class="s0">import </span>java.util.Collections;
+<span class="s0">import </span>java.util.List;
+
+<span class="s0">import static </span>android.widget.Toast.LENGTH_SHORT;
+
+<span class="s0">public class </span>PlayActivity <span class="s0">extends </span>AppCompatActivity {
+    TextView aufgabeView;
+    <span class="s0">int </span>nummer1, nummer2;
+    <span class="s0">int </span>number;
+    <span class="s0">int </span>ergebnis,ergebnis1, ergebnis2, ergebnis3;
+    <span class="s0">int </span>fakeErgebnis;
+    <span class="s0">int </span>richtigCounter;
+    <span class="s0">int </span>counterGesamt;
+    <span class="s0">int </span>lebenCounter=<span class="s2">5</span>;
+    TextView counterTxt;
+    TextView countDownTxt;
+    TextView ergebnisView;
+    ImageView heart1, heart2,heart3,heart4,heart5;
+    Button button1, button2, button3, button4,playAgainBtn;
+    Integer[] ergebnisArray =<span class="s0">new </span>Integer[<span class="s2">4</span>];
+    CountDownTimer timer;
+
+    @Override
+    <span class="s0">protected void </span>onCreate(Bundle savedInstanceState) {
+        <span class="s0">super</span>.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_play);
+        aufgabeView=findViewById(R.id.aufgabeView);
+        counterTxt=findViewById(R.id.counterTxt);
+        countDownTxt=findViewById(R.id.countDownTxt);
+        button1=findViewById(R.id.button1);
+        button2=findViewById(R.id.button2);
+        button3=findViewById(R.id.button3);
+        button4=findViewById(R.id.button4);
+        playAgainBtn=findViewById(R.id.playAgainBtn);
+        playAgainBtn.setVisibility(View.INVISIBLE);
+        ergebnisView=findViewById(R.id.ergebnisView);
+        heart1=findViewById(R.id.heart1);
+        heart2=findViewById(R.id.heart2);
+        heart3=findViewById(R.id.heart3);
+        heart4=findViewById(R.id.heart4);
+        heart5=findViewById(R.id.heart5);
+        setCounter(richtigCounter=<span class="s2">0</span>,counterGesamt=<span class="s2">0</span>);
+        startAgain();
+
+    }
+    <span class="s0">public int </span>aufgabe(<span class="s0">int </span>nummer1, <span class="s0">int </span>nummer2){
+        ergebnis=nummer1+nummer2;
+        <span class="s0">return </span>ergebnis;
+    }
+    <span class="s0">public int </span>rngNumber(){
+        <span class="s0">int </span>min=<span class="s2">1</span>;
+        <span class="s0">int </span>max=<span class="s2">40</span>;
+        number=(min+ (<span class="s0">int</span>)(Math.random()*((max-min)+<span class="s2">1</span>)));
+        Log.i(String.valueOf(number), <span class="s3">&quot;Number&quot;</span>);
+        <span class="s0">return </span>number;
+    }
+    <span class="s0">public void </span>setAufgabeView(<span class="s0">int </span>nummer1, <span class="s0">int </span>nummer2){
+        aufgabeView.setText(nummer1+<span class="s3">&quot; + &quot;</span>+nummer2+<span class="s3">&quot; =? &quot;</span>);
+    }
+    <span class="s0">public int </span>rngErgebnis(<span class="s0">int </span>ergebnis){
+        <span class="s0">int </span>min=<span class="s2">1</span>;
+        <span class="s0">int </span>max=<span class="s2">100</span>;
+        <span class="s0">int </span>minErgebnis=<span class="s2">1</span>;
+        <span class="s0">int </span>maxErgebnis=<span class="s2">10</span>;
+        <span class="s0">int </span>operand=<span class="s2">2</span>;
+        operand=(min+ (<span class="s0">int</span>)(Math.random()*((max-min)+<span class="s2">1</span>)));
+        <span class="s0">if</span>(operand&gt;=<span class="s2">50</span>){
+            fakeErgebnis= ergebnis-(minErgebnis+ (<span class="s0">int</span>)(Math.random()*((maxErgebnis-minErgebnis)+<span class="s2">1</span>)));
+        }
+        <span class="s0">else </span>{
+            fakeErgebnis = ergebnis + (minErgebnis + (<span class="s0">int</span>) (Math.random() * ((maxErgebnis - minErgebnis) + <span class="s2">1</span>)));
+        }
+        <span class="s0">return </span>fakeErgebnis;
+    }
+    <span class="s0">public void </span>startAgain( ){
+        playAgainBtn.setVisibility(View.INVISIBLE);
+        nummer1=rngNumber();
+        nummer2=rngNumber();
+        aufgabe(nummer1,nummer2);
+        setAufgabeView(nummer1,nummer2);
+        <span class="s0">for</span>(<span class="s0">int </span>i=<span class="s2">0</span>; i&lt;=<span class="s2">2</span>;i++) {
+            rngErgebnis(ergebnis);
+            ergebnisArray[i]=fakeErgebnis;
+        }
+        ergebnisArray[<span class="s2">3</span>]=ergebnis;
+        List&lt;Integer&gt; ergebnisList= Arrays.asList(ergebnisArray);
+        Collections.shuffle(ergebnisList);
+        button1.setText(String.valueOf(ergebnisList.get(<span class="s2">0</span>)));
+        button2.setText(String.valueOf(ergebnisList.get(<span class="s2">1</span>)));
+        button3.setText(String.valueOf(ergebnisList.get(<span class="s2">2</span>)));
+        button4.setText(String.valueOf(ergebnisList.get(<span class="s2">3</span>)));
+        <span class="s0">if</span>(counterGesamt&gt;<span class="s2">30</span>){
+            setCountDown(<span class="s2">8000</span>);
+        }
+        <span class="s0">else if</span>(counterGesamt&gt;<span class="s2">20</span>){
+            setCountDown(<span class="s2">10000</span>);
+        }
+        <span class="s0">else if</span>(counterGesamt&gt;<span class="s2">15</span>){
+            setCountDown(<span class="s2">15000</span>);
+        }
+        <span class="s0">else if</span>(counterGesamt&gt;<span class="s2">10</span>){
+            setCountDown(<span class="s2">25000</span>);
+        }
+        <span class="s0">else if</span>(counterGesamt&lt;=<span class="s2">10</span>){
+            setCountDown(<span class="s2">30000</span>);
+        }
+
+    }
+    <span class="s0">public void </span>checkResult(View view){
+        Button button=(Button)view;
+        button.getText();
+        counterGesamt=counterGesamt+<span class="s2">1</span>;
+        Log.i(<span class="s3">&quot;Tag&quot;</span>, String.valueOf(view.getTag()));
+        Log.i(<span class="s3">&quot;Text&quot;</span>, String.valueOf(button.getText()));
+        <span class="s0">if</span>(ergebnis == Integer.valueOf(String.valueOf(button.getText()))){
+            richtigCounter=richtigCounter+<span class="s2">1</span>;
+        }
+        <span class="s0">else</span>{
+            lebenCounter=lebenCounter-<span class="s2">1</span>;
+            <span class="s0">if</span>(lebenCounter==<span class="s2">4</span>){
+                heart5.setVisibility(View.INVISIBLE);
+            }
+            <span class="s0">if</span>(lebenCounter==<span class="s2">3</span>){
+                heart4.setVisibility(View.INVISIBLE);
+            }
+            <span class="s0">if</span>(lebenCounter==<span class="s2">2</span>){
+                heart3.setVisibility(View.INVISIBLE);
+            }
+            <span class="s0">if</span>(lebenCounter==<span class="s2">1</span>){
+                heart2.setVisibility(View.INVISIBLE);
+            }
+
+            <span class="s0">if</span>(lebenCounter==<span class="s2">0</span>){
+                heart1.setVisibility(View.INVISIBLE);
+            }
+        }
+        <span class="s0">if</span>(lebenCounter&lt;=<span class="s2">0</span>){
+            button1.setEnabled(<span class="s0">false</span>);
+            button2.setEnabled(<span class="s0">false</span>);
+            button3.setEnabled(<span class="s0">false</span>);
+            button4.setEnabled(<span class="s0">false</span>);
+            gameOver();
+        }
+        <span class="s0">else if</span>(lebenCounter&gt;<span class="s2">0</span>) {
+            setCounter(richtigCounter, counterGesamt);
+            timer.cancel();
+            startAgain();
+        }
+    }
+    <span class="s0">public void </span>setCounter(<span class="s0">int </span>richtigCounter, <span class="s0">int </span>counterGesamt){
+        counterTxt.setText(richtigCounter+<span class="s3">&quot; / &quot;</span>+counterGesamt);
+    }
+    <span class="s0">public void </span>setCountDown(<span class="s0">int </span>millisInFuture){
+        timer= <span class="s0">new </span>CountDownTimer(millisInFuture,<span class="s2">500</span>) {
+            @Override
+            <span class="s0">public void </span>onTick(<span class="s0">long </span>millisUntilFinished) {
+                countDownTxt.setText(String.valueOf(millisUntilFinished/<span class="s2">1000</span>));
+                <span class="s0">if</span>(millisUntilFinished/<span class="s2">1000</span>&lt;=<span class="s2">10</span>){
+                    countDownTxt.setTextColor(Color.RED);
+                }
+            }
+
+            @Override
+            <span class="s0">public void </span>onFinish() {
+                button1.setEnabled(<span class="s0">false</span>);
+                button2.setEnabled(<span class="s0">false</span>);
+                button3.setEnabled(<span class="s0">false</span>);
+                button4.setEnabled(<span class="s0">false</span>);
+                playAgainBtn.setVisibility(View.VISIBLE);
+                ergebnisView.setVisibility(View.VISIBLE);
+                ergebnisView.setText(String.valueOf(ergebnis));
+                heart1.setVisibility(View.INVISIBLE);
+                heart2.setVisibility(View.INVISIBLE);
+                heart3.setVisibility(View.INVISIBLE);
+                heart4.setVisibility(View.INVISIBLE);
+                heart5.setVisibility(View.INVISIBLE);
+                Toast.makeText(getApplicationContext(),<span class="s3">&quot;Zeit abgelaufen! &quot;</span>, LENGTH_SHORT).show();
+            }
+        }.start();
+    }
+    <span class="s0">public void </span>playAgainClick(View view){
+        richtigCounter=<span class="s2">0</span>;
+        counterGesamt=<span class="s2">0</span>;
+        button1.setEnabled(<span class="s0">true</span>);
+        button2.setEnabled(<span class="s0">true</span>);
+        button3.setEnabled(<span class="s0">true</span>);
+        button4.setEnabled(<span class="s0">true</span>);
+        ergebnisView.setVisibility(View.INVISIBLE);
+        setCounter(richtigCounter,counterGesamt);
+        countDownTxt.setTextColor(Color.BLACK);
+        lebenCounter=<span class="s2">5</span>;
+        heart1.setVisibility(View.VISIBLE);
+        heart2.setVisibility(View.VISIBLE);
+        heart3.setVisibility(View.VISIBLE);
+        heart4.setVisibility(View.VISIBLE);
+        heart5.setVisibility(View.VISIBLE);
+        startAgain();
+    }
+    <span class="s0">public void </span>gameOver(){
+        timer.cancel();
+        playAgainBtn.setVisibility(View.VISIBLE);
+        ergebnisView.setVisibility(View.VISIBLE);
+        ergebnisView.setText(String.valueOf(ergebnis));
+    }
+
+}</pre>
+</body>
+</html>
