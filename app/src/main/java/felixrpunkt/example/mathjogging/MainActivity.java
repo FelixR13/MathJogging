@@ -8,6 +8,9 @@ import android.view.View;
 import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
+    /*Author FelixR
+    Starts the game after pressing the start button.
+     */
     Button startBtn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,4 +23,5 @@ public class MainActivity extends AppCompatActivity {
         startActivity(i);
         finish();
     }
+
 }

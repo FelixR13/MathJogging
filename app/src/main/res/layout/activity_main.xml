@@ -17,4 +17,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="349dp"
+        android:layout_height="87dp"
+        android:layout_marginTop="244dp"
+        android:fontFamily="@font/amaranth"
+        android:text="After you have pressed the start button, you have 30 seconds to solve the math problem. The more tasks you complete, the shorter the time. You can be wrong 5 times. "
+        android:textAlignment="center"
+        android:textColor="@color/design_default_color_on_secondary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
